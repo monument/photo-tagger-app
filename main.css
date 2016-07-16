@@ -18,7 +18,29 @@ img {
 	height: auto;
 }
 
+:root {
+	--key-spacing: 0.5em;
+}
 
+dl {
+	display: grid;
+	grid-template-columns: min-content auto;
+}
+dt {
+	font-weight: bold;
+	grid-column: 1;
+	margin-right: 1em;
+}
+dd {
+	grid-column: 2;
+}
+
+dt:not(:first-child) {
+	margin-top: var(--key-spacing);
+}
+dt:not(:first-child) + dd {
+	margin-top: var(--key-spacing);
+}
 
 .selector > .contents {
 	display: flex;
