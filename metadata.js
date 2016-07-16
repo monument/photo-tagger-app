@@ -82,6 +82,10 @@ function updateXmp(xmp, newKeywords) {
 	return meta.setIn(KEYPATH_TO_KEYWORDS, newKeywords)
 }
 
+function sortKeywords(xmp) {
+	return xmp.updateIn(KEYPATH_TO_KEYWORDS, kw => kw.sort())
+}
+
 function buildXml(xmpObject) {
 	return xmlBuilder.buildObject(xmpObject.toJSON())
 }
@@ -93,6 +97,7 @@ function saveMetadata(immImage) {
 
 	return readMetadata(filepath)
 		.then(data => updateXmp(data, keywords))
+		.then(sortKeywords)
 		.then(buildXml)
 		.then(xmlString =>
 			writeFilePromise(filepath, xmlString + '\n', 'utf-8'))
