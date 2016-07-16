@@ -5,8 +5,11 @@ const React = require('react')
 const xor = require('lodash/xor')
 const Immutable = require('immutable')
 
-const Config = require('electron-config');
-const config = new Config({defaults: {selectedIndex: 0}});
+const ConfigClass = require('conf')
+const config = new ConfigClass({
+	defaults: {selectedIndex: 0},
+	cwd: __dirname, // stores the config locally
+})
 
 const KEYPATH_TO_KEYWORDS = require('./keypath')
 const ImageTagger = require('./image-tagger')

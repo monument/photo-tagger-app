@@ -17,7 +17,7 @@
     "bluebird": "^3.4.1",
     "chokidar": "^1.5.2",
     "classnames": "^2.2.5",
-    "electron-config": "^0.2.0",
+    "conf": "^0.2.0",
     "electron-prebuilt": "^1.2.3",
     "graceful-fs": "^4.1.4",
     "immutable": "^3.8.1",
