@@ -29,7 +29,7 @@ const DETAILS = {
 		},
 		finish: {
 			$type: 'or',
-			$dependsOn: 'style',
+			$dependsOn: 'Style',
 			'upright': ['Polish 2', 'Polish 3', 'All Polish', 'Flamed', 'Frosted', 'Sawn', 'Other'],
 			'slant': ['Polish Slant Face', 'Polish 3', 'All Polish', 'Flamed', 'Frosted', 'Sawn', 'Other'],
 			'bevel': ['Polish Face', 'All Polish', 'Flamed', 'Frosted', 'Sawn', 'Other'],
@@ -63,7 +63,7 @@ const DETAILS = {
 		color: null,
 		finish: {
 			$type: 'or',
-			$dependsOn: 'style',
+			$dependsOn: 'Style',
 			upright: ['Normal', 'Other'],
 			flat: ['Normal', 'Other'],
 			'va marker': ['Normal', 'Other'],
@@ -87,7 +87,7 @@ const DETAILS = {
 		color: {$type: 'or', $options: ['White', 'Other']},
 		finish: {
 			$type: 'or',
-			$dependsOn: 'style',
+			$dependsOn: 'Style',
 			upright: ['Normal', 'Rock Pitch', 'Other'],
 			flat: ['Normal', 'Other'],
 			'va marker': ['Normal', 'Other'],
@@ -209,7 +209,7 @@ function ImageTagger(props) {
 				let options = possibilities.$options
 
 				if (possibilities.$dependsOn) {
-					let dependsOn = image.getIn(['keywords', possibilities.$dependsOn])
+					let dependsOn = keywords.get(possibilities.$dependsOn)
 					if (dependsOn) {
 						dependsOn = dependsOn.toLowerCase()
 					}
