@@ -199,7 +199,7 @@ function ImageTagger(props) {
 				onChange={onChangeMetadata('Size')}
 			/>
 			{DETAIL_LIST.map(title => {
-				let selected = DETAILS[material.toLowerCase()]
+				let selected = DETAILS[keywords.get('Material', '').toLowerCase()] || {}
 				let possibilities = selected[title.toLowerCase()]
 				if (!possibilities) {
 					return null
