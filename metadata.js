@@ -33,7 +33,14 @@ function resolveMetadata(dir, basename) {
 
 
 function extractKeywords(xmp) {
-	return xmp.getIn(KEYPATH_TO_KEYWORDS, Immutable.List())
+	let meta = xmp.getIn(['x:xmpmeta', 'rdf:RDF', 0, 'rdf:Description', 0])
+	let subject = meta.get('dc:subject', Immutable.List()).get(0, Immutable.Map())
+	let bag = subject.get('rdf:Bag', Immutable.List()).get(0, Immutable.Map())
+	if (!Immutable.Map.isMap(bag)) {
+		bag = Immutable.Map({'rdf:li': Immutable.List()})
+	}
+	let li = bag.get('rdf:li', Immutable.List())
+	return li
 }
 
 function keywordListToMap(keywords) {
@@ -71,7 +78,8 @@ function loadMetadata(filepath) {
 
 
 function updateXmp(xmp, newKeywords) {
-	return xmp.setIn(KEYPATH_TO_KEYWORDS, newKeywords)
+	let meta = xmp.mergeDeepIn(['x:xmpmeta', 'rdf:RDF', 0, 'rdf:Description', 0, 'dc:subject', 0, 'rdf:Bag', 0], Immutable.Map({'rdf:li': Immutable.List()}))
+	return meta.setIn(KEYPATH_TO_KEYWORDS, newKeywords)
 }
 
 function buildXml(xmpObject) {
