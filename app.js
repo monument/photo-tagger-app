@@ -10,6 +10,7 @@ const config = new Config({defaults: {selectedIndex: 0}});
 
 const KEYPATH_TO_KEYWORDS = require('./keypath')
 const ImageTagger = require('./image-tagger')
+const ImageViewer = require('./image-viewer')
 
 const allImages = require('./find-images')
 

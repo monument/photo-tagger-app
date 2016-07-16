@@ -1,5 +1,6 @@
 'use strict'
 
+const Immutable = require('immutable')
 const bluebird = require('bluebird')
 const pify = bluebird.promisify.bind(bluebird)
 
@@ -11,6 +12,9 @@ const path = require('path')
 const fs = require('fs')
 const readFilePromise = pify(fs.readFile)
 const writeFilePromise = pify(fs.writeFile)
+
+const KEYPATH_TO_KEYWORDS = require('./keypath')
+const PHOTO_DIR = require('./paths').PHOTO_DIR
 
 
 function splitInitialFilepath(filepath) {
