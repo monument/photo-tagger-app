@@ -168,7 +168,6 @@ Selector.defaultProps = {
 
 //
 
-module.exports = ImageTagger
 function ImageTagger(props) {
 	let {image, onChangeMetadata} = this.props
 	if (!image) {
@@ -236,3 +235,4 @@ function ImageTagger(props) {
 		</form>
 	)
 }
+module.exports = ImageTagger

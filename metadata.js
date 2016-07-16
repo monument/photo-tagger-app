@@ -35,14 +35,13 @@ function loadMetadata(filepath) {
 }
 
 
-module.exports.save = saveMetadata
 function saveMetadata(immImage) {
 	let data = buildXml.buildObject(immImage.get('metadata').toJSON())
 	return writeFilePromise(immImage.get('metadataPath'), data, 'utf-8')
 }
+module.exports.save = saveMetadata
 
 
-module.exports.load = loadData
 function loadData(imagePath) {
 	let {directory, filename, basename} = splitInitialFilepath(imagePath)
 
@@ -58,3 +57,4 @@ function loadData(imagePath) {
 				directory
 			}))
 }
+module.exports.load = loadData

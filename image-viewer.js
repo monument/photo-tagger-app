@@ -1,6 +1,5 @@
 'use strict'
 
-module.exports = ImageViewer
 function ImageViewer({image}) {
 	if (!image) {
 		return null
@@ -11,3 +10,4 @@ function ImageViewer({image}) {
 		<div>{JSON.stringify(image.getIn(['metadata', ...KEYPATH_TO_KEYWORDS]), null, 2)}</div>
 	</div>
 }
+module.exports = ImageViewer
