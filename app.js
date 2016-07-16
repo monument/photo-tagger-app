@@ -68,7 +68,6 @@ class App extends React.Component {
 		let imagePath = this.state.imagePaths.get(newIndex)
 
 		load(imagePath).then(data => {
-			console.log(data)
 			config.set('selectedIndex', newIndex)
 
 			this.setState(state => ({
@@ -128,7 +127,18 @@ class App extends React.Component {
 		return (
 			<div className='app-container'>
 				<header className='header'>
-					<p>{selectedIndex + 1} of {count}</p>
+					<div>
+						<input
+							type='number'
+							max={this.state.imagePaths.size}
+							min={1}
+							value={selectedIndex + 1}
+							onChange={ev => this.onChangeImage(parseInt(ev.target.value, 10) - 1)}
+							style={{width: this.state.imagePaths.size.toString().length + 3 + 'ch'}}
+						/>
+						{' of '}
+						{count}
+					</div>
 					<div className='controls'>
 						<button
 							onClick={this.copyFromPrevious.bind(this)}
