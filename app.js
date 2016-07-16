@@ -19,38 +19,28 @@ const {load, save} = metadataTools
 
 
 function replaceKey(immutableImg, key, value) {
-	let metadata = immutableImg.get('metadata')
-	let keywords = metadata.getIn(KEYPATH_TO_KEYWORDS)
-
-	let cleaned = keywords.filterNot(kw => kw.split('|')[0] === key)
-	let updated = keywords.push(value)
-
-	let newMetadata = metadata.set(KEYPATH_TO_KEYWORDS, updated)
-	let newImage = immutableImg.set('metadata', newMetadata)
+	let keywords = immutableImg.get('keywords')
+	let updated = keywords.set(key, value)
+	let newImage = immutableImg.set('keywords', updated)
 	return newImage
 }
 
 function updateKey(immutableImg, key, value) {
-	let metadata = immutableImg.get('metadata')
-	let keywords = metadata.getIn(KEYPATH_TO_KEYWORDS)
-
-	let cleaned = keywords.filterNot(kw => kw.split('|')[0] === key)
-	let only = keywords.filter(kw => kw.split('|')[0] === key)
+	let keywords = immutableImg.get('keywords')
+	let only = keywords.get(key)
 
 	// use xor to "toggle" values in the array:
 	// - if they exist in both args, they're removed from the result.
 	// - else, they're added.
 	let attributes = Immutable.List(xor(only.toArray(), [value]))
-	let updated = cleaned.concat(attributes)
+	let updated = only.set(key, attributes)
 
-	let newMetadata = metadata.set(KEYPATH_TO_KEYWORDS, updated)
-	let newImage = immutableImg.set('metadata', newMetadata)
+	let newImage = immutableImg.set('keywords', updated)
 	return newImage
 }
 
 function copyMetadata(fromImage, toImage) {
-	let metadata = fromImage.getIn(['metadata', ...KEYPATH_TO_KEYWORDS])
-	return toImage.mergeIn(['metadata', ...KEYPATH_TO_KEYWORDS], metadata)
+	return toImage.merge('keywords', fromImage.get('keywords'))
 }
 
 
@@ -78,6 +68,7 @@ class App extends React.Component {
 		let imagePath = this.state.imagePaths.get(newIndex)
 
 		load(imagePath).then(data => {
+			console.log(data)
 			config.set('selectedIndex', newIndex)
 
 			this.setState(state => ({

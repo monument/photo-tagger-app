@@ -5,9 +5,9 @@ function ImageViewer({image}) {
 		return null
 	}
 	return <div className='viewer'>
-		<img src={`file://${image.get('thumbBase')}.jpg`} />
+		<img src={`file://${image.get('thumbPath')}`} />
 		<br/>
-		<div>{JSON.stringify(image.getIn(['metadata', ...KEYPATH_TO_KEYWORDS]), null, 2)}</div>
+		<div>{JSON.stringify(image.get('keywords'), null, 2)}</div>
 	</div>
 }
 module.exports = ImageViewer

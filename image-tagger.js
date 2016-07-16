@@ -11,7 +11,7 @@ const CATEGORIES = ['Monument', 'Bench', 'Inscription', 'Statue', 'Reference', '
 const MATERIALS = ['Granite', 'Bronze', 'Marble', 'Other']
 const SIZES = ['Single', 'Double', 'Family', 'Monumental']
 
-const DETAIL_LIST = ['shape', 'style', 'color', 'finish', 'attributes', 'considerations']
+const DETAIL_LIST = ['Shape', 'Style', 'Color', 'Finish', 'Attributes', 'Considerations']
 
 const DETAILS = {
 	granite: {
@@ -169,38 +169,36 @@ Selector.defaultProps = {
 //
 
 function ImageTagger(props) {
-	let {image, onChangeMetadata} = this.props
+	let {image, onChangeMetadata} = props
 	if (!image) {
 		return null
 	}
-	let category = image.getIn(['metadata', 'category'])
-	let material = image.getIn(['metadata', 'material'])
-	let size = image.getIn(['metadata', 'size'])
+	let keywords = image.get('keywords')
 
 	return (
 		<form className='tagger'>
 			<Selector
 				type='or'
 				title='Category'
-				selected={category}
+				selected={keywords.get('Category')}
 				options={CATEGORIES}
 				onChange={onChangeMetadata('Category')}
 			/>
 			<Selector
 				type='or'
 				title='Material'
-				selected={material}
+				selected={keywords.get('Material')}
 				options={MATERIALS}
 				onChange={onChangeMetadata('Material')}
 			/>
 			<Selector
 				type='or'
 				title='Size'
-				selected={size}
+				selected={keywords.get('Size')}
 				options={SIZES}
 				onChange={onChangeMetadata('Size')}
 			/>
-			{DETAIL_LIST.map(startCase).map(title => {
+			{DETAIL_LIST.map(title => {
 				let selected = DETAILS[material.toLowerCase()]
 				let possibilities = selected[title.toLowerCase()]
 				if (!possibilities) {
@@ -211,7 +209,7 @@ function ImageTagger(props) {
 				let options = possibilities.$options
 
 				if (possibilities.$dependsOn) {
-					let dependsOn = image.getIn(['metadata', possibilities.$dependsOn])
+					let dependsOn = image.getIn(['keywords', possibilities.$dependsOn])
 					if (dependsOn) {
 						dependsOn = dependsOn.toLowerCase()
 					}
@@ -226,7 +224,7 @@ function ImageTagger(props) {
 					key={title}
 					type={type}
 					title={title}
-					selected={image.getIn(['metadata', title.toLowerCase()])}
+					selected={keywords.get(title)}
 					options={options}
 					warning={!options && possibilities.$dependsOn ? `Please select a ${possibilities.$dependsOn.toLowerCase()}` : false}
 					onChange={onChangeMetadata(title)}

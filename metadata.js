@@ -6,7 +6,7 @@ const pify = bluebird.promisify.bind(bluebird)
 
 const xml2js = require('xml2js')
 const parseXml = pify(xml2js.parseString.bind(xml2js))
-const buildXml = new xml2js.Builder()
+const xmlBuilder = new xml2js.Builder()
 
 const path = require('path')
 const fs = require('fs')
@@ -28,16 +28,56 @@ function resolveMetadata(dir, basename) {
 }
 
 
-function loadMetadata(filepath) {
-	return readFilePromise(filepath, 'utf-8')
-		.then(data => parseXml(data))
-		.then(md => Immutable.fromJS(md))
+function extractKeywords(xmp) {
+	return xmp.getIn(KEYPATH_TO_KEYWORDS, Immutable.List())
+}
+
+function keywordListToMap(keywords) {
+	let simpleKeys = ['Size', 'Shape', 'Finish', 'Color', 'Style', 'Category']
+	let listKeys = ['Attributes', 'Considerations', 'Keywords']
+
+	let mapped = keywords.groupBy(kw => kw.split('|')[0])
+	let simplified = mapped.map((val, key) => simpleKeys.includes(key) ? val[0] : val)
+
+	return simplified
+}
+
+function keywordMapToList(keywords) {
+	return keywords.reduce((list, val, key) => list.push(`${key}|${val}`), Immutable.List())
 }
 
 
+function readMetadata(filepath) {
+	return readFilePromise(filepath, 'utf-8')
+		.then(parseXml)
+		.then(Immutable.fromJS)
+}
+
+
+function loadMetadata(filepath) {
+	return readMetadata(filepath)
+		.then(extractKeywords)
+		.then(keywordListToMap)
+}
+
+
+function updateXmp(xmp, newKeywords) {
+	return xmp.setIn(KEYPATH_TO_KEYWORDS, newKeywords)
+}
+
+function buildXml(xmpObject) {
+	return xmlBuilder.buildObject(xmpObject.toJSON())
+}
+
 function saveMetadata(immImage) {
-	let data = buildXml.buildObject(immImage.get('metadata').toJSON())
-	return writeFilePromise(immImage.get('metadataPath'), data, 'utf-8')
+	let filepath = immImage.get(metadataPath)
+	let keywords = keywordMapToList(immImage.get('keywords'))
+
+	return readMetadata(filepath)
+		.then(data => updateXmp(data, keywords))
+		.then(buildXml)
+		.then(xmlString =>
+			writeFilePromise(filepath, xmlString, 'utf-8'))
 }
 module.exports.save = saveMetadata
 
@@ -45,15 +85,14 @@ module.exports.save = saveMetadata
 function loadData(imagePath) {
 	let {directory, filename, basename} = splitInitialFilepath(imagePath)
 
-	let thumbnailPath = imagePath
 	let metadataPath = resolveMetadata(directory, basename)
 
 	return loadMetadata(metadataPath)
-		.then(metadata =>
+		.then(keywords =>
 			Immutable.Map({
-				thumbBase: thumbnailPath,
+				thumbPath: imagePath,
 				metadataPath,
-				metadata,
+				keywords,
 				directory
 			}))
 }
