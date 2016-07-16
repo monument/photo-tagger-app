@@ -50,9 +50,9 @@ const DETAILS = {
 			],
 		},
 		considerations: {
-      $type: 'and',
-      $options: ['Website', 'Brochure', 'Editing'],
-    },
+			$type: 'and',
+			$options: ['Website', 'Brochure', 'Editing'],
+		},
 	},
 	bronze: {
 		shape: null,
@@ -77,9 +77,9 @@ const DETAILS = {
 			],
 		},
 		considerations: {
-      $type: 'and',
-      $options: ['Website', 'Brochure', 'Editing'],
-    },
+			$type: 'and',
+			$options: ['Website', 'Brochure', 'Editing'],
+		},
 	},
 	marble: {
 		shape: {$type: 'or', $options: ['Serp Top', 'Cross', 'Heart', 'Double Heart', 'Teardrop', 'Flame', 'Gothic', 'Other']},
@@ -99,9 +99,9 @@ const DETAILS = {
 			],
 		},
 		considerations: {
-      $type: 'and',
-      $options: ['Website', 'Brochure', 'Editing'],
-    },
+			$type: 'and',
+			$options: ['Website', 'Brochure', 'Editing'],
+		},
 	},
 	other: {
 		shape: null,
@@ -110,16 +110,16 @@ const DETAILS = {
 		finish: null,
 		attributes: {
 			$type: 'and',
-      $options: [
-        'Porcelain Photo',
-        'Laser Etching',
-        'Gold Leaf',
-        'Shape Carving',
-        'US Metalcraft Vase',
-        'Bronze Vase',
-        'Granite Vase',
-        'Other',
-      ],
+			$options: [
+				'Porcelain Photo',
+				'Laser Etching',
+				'Gold Leaf',
+				'Shape Carving',
+				'US Metalcraft Vase',
+				'Bronze Vase',
+				'Granite Vase',
+				'Other',
+			],
 		},
 		considerations: {
 			$type: 'and',
