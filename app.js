@@ -33,7 +33,7 @@ function updateKey(immutableImg, key, value) {
 	// - if they exist in both args, they're removed from the result.
 	// - else, they're added.
 	let attributes = Immutable.List(xor(only.toArray(), [value]))
-	let updated = only.set(key, attributes)
+	let updated = keywords.set(key, attributes)
 
 	let newImage = immutableImg.set('keywords', updated)
 	return newImage

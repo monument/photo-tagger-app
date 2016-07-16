@@ -46,7 +46,13 @@ function keywordListToMap(keywords) {
 }
 
 function keywordMapToList(keywords) {
-	return keywords.reduce((list, val, key) => list.push(`${key}|${val}`), Immutable.List())
+	return keywords.reduce((list, val, key) => {
+		return Immutable.List.isList(val)
+			// if it's a list, add all of the keywords to the overall list
+			? list.concat(val.map(v => `${key}|${v}`))
+			// otherwise, just add the single one
+			: list.push(`${key}|${val}`)
+	}, Immutable.List())
 }
 
 
@@ -73,14 +79,14 @@ function buildXml(xmpObject) {
 }
 
 function saveMetadata(immImage) {
-	let filepath = immImage.get(metadataPath)
+	let filepath = immImage.get('metadataPath')
 	let keywords = keywordMapToList(immImage.get('keywords'))
 
 	return readMetadata(filepath)
 		.then(data => updateXmp(data, keywords))
 		.then(buildXml)
 		.then(xmlString =>
-			writeFilePromise(filepath, xmlString, 'utf-8'))
+			writeFilePromise(filepath, xmlString + '\n', 'utf-8'))
 }
 module.exports.save = saveMetadata
 
