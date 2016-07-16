@@ -1,5 +1,6 @@
 'use strict'
 
+const tail = require('lodash/tail')
 const Immutable = require('immutable')
 const bluebird = require('bluebird')
 const pify = bluebird.promisify.bind(bluebird)
@@ -15,6 +16,9 @@ const writeFilePromise = pify(fs.writeFile)
 
 const KEYPATH_TO_KEYWORDS = require('./keypath')
 const PHOTO_DIR = require('./paths').PHOTO_DIR
+
+const simpleKeys = Immutable.List(['Size', 'Shape', 'Material', 'Finish', 'Color', 'Style', 'Category'])
+const listKeys = Immutable.List(['Attributes', 'Considerations', 'Keywords'])
 
 
 function splitInitialFilepath(filepath) {
@@ -33,13 +37,12 @@ function extractKeywords(xmp) {
 }
 
 function keywordListToMap(keywords) {
-	let simpleKeys = ['Size', 'Shape', 'Finish', 'Color', 'Style', 'Category']
-	let listKeys = ['Attributes', 'Considerations', 'Keywords']
+	let mapped = keywords
+		.groupBy(kw => kw.split('|')[0])
+		.map(val => val.flatMap(v => tail(v.split('|'))))
+		.map((val, key) => simpleKeys.includes(key) ? val.first() : val)
 
-	let mapped = keywords.groupBy(kw => kw.split('|')[0])
-	let simplified = mapped.map((val, key) => simpleKeys.includes(key) ? val[0] : val)
-
-	return simplified
+	return mapped
 }
 
 function keywordMapToList(keywords) {
