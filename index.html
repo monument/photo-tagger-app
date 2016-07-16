@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+	<head>
+		<meta charset="utf-8">
+		<title>Photo Tagger</title>
+		<link rel="stylesheet" href="./main.css">
+	</head>
+	<body>
+		<div id='app'></div>
+		<script>
+			require('babel-register')
+			const App = require('./app.js')
+			const React = require('react')
+			const dom = require('react-dom')
+			const node = document.querySelector('#app')
+			dom.render(React.createElement(App, null), node)
+		</script>
+	</body>
+</html>

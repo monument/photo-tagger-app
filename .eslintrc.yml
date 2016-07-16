@@ -1,0 +1,19 @@
+%YAML 1.2
+---
+root: true
+
+extends: 'eslint:recommended'
+
+env:
+  browser: true
+  node: true
+
+parser: babel-eslint
+parserOptions:
+  ecamVersion: 6
+  sourceType: module
+
+rules:
+  comma-dangle: [error, always-multiline]
+  no-unused-vars: [1]
+  no-console: [0]

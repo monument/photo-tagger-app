@@ -1,0 +1,174 @@
+:root {
+	--black: #444;
+	--white: #fff;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	color: var(--black);
+	font-size: 14px;
+	font-family: BlinkMacSystemFont;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+
+
+.selector > .contents {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+}
+.selector .warning {
+	padding: 6px;
+	margin: 0;
+}
+.selector > h2 {
+	font-size: 1em;
+	text-align: center;
+	margin-bottom: 0.25em;
+}
+
+.option {
+	flex: 1 0 auto;
+	display: inline-flex;
+	flex-flow: column nowrap;
+}
+
+.selector.radio .option {
+	flex-flow: column nowrap;
+    align-items: center;
+}
+.selector.checkbox .option {
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: center;
+}
+
+.option p {
+	display: inline-block;
+	margin: 0;
+}
+
+
+
+.selector {
+	-webkit-user-select: none;
+}
+
+.selector + .selector {
+	margin-top: 12px;
+}
+
+.selector > .contents {
+	/*border: solid 1px var(--black);*/
+	/*border-radius: 4px;*/
+}
+
+.selector.radio .option {
+	min-width: 60px;
+}
+
+.selector.checkbox .option {
+	min-width: 25%;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+.selector.checkbox .option input {
+	margin-right: 4px;
+}
+
+.option.selected {
+	background-color: var(--black);
+	color: var(--white);
+	border-radius: 4px;
+}
+
+.option {
+	padding-top: 2px;
+	padding-left: 2px;
+	padding-bottom: 2px;
+	padding-right: 2px;
+}
+
+
+
+/*.section > div {
+	display: grid;
+	grid-template-columns: repeat(4, 200px);
+	justify-content: center;
+}*/
+
+.section-heading {
+	margin-bottom: 0.5em;
+	text-align: center;
+}
+
+.keywords {
+	text-align: center;
+}
+
+.keywords {
+	margin-top: 0;
+	margin-bottom: 0.5em;
+}
+
+.image-sample {
+	/* text-align: center; */
+	padding: 5px;
+	/*display: inherit;*/
+}
+
+figure {
+	margin: 0;
+}
+
+.image-sample > div {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+
+
+body {
+	margin: 10px;
+}
+
+* {
+	margin: 0;
+}
+
+.app-container {
+	display: grid;
+	grid-template-columns: auto 300px;
+	grid-template-rows: 30px auto;
+
+	grid-column-gap: 20px;
+}
+
+.header {
+	grid-column: 1/1;
+	grid-row: 1/1;
+
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.viewer {
+	grid-column: 1/2;
+	grid-row: 2/3;
+}
+
+.tagger {
+	grid-column: 2/3;
+	grid-row: 1/3;
+}
+
