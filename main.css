@@ -10,7 +10,7 @@
 body {
 	color: var(--black);
 	font-size: 14px;
-	font-family: BlinkMacSystemFont;
+	font-family: BlinkMacSystemFont, Segoe UI, sans-serif;
 }
 
 img {
