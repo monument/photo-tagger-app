@@ -79,6 +79,7 @@ function buildXml(xmpObject) {
 }
 
 function saveMetadata(immImage) {
+	console.time('saveMetadata')
 	let filepath = immImage.get('metadataPath')
 	let keywords = keywordMapToList(immImage.get('keywords'))
 
@@ -87,11 +88,16 @@ function saveMetadata(immImage) {
 		.then(buildXml)
 		.then(xmlString =>
 			writeFilePromise(filepath, xmlString + '\n', 'utf-8'))
+		.then(res => {
+			console.timeEnd('saveMetadata')
+			return res
+		})
 }
 module.exports.save = saveMetadata
 
 
 function loadData(imagePath) {
+	console.time('loadData')
 	let {directory, filename, basename} = splitInitialFilepath(imagePath)
 
 	let metadataPath = resolveMetadata(directory, basename)
@@ -104,5 +110,9 @@ function loadData(imagePath) {
 				keywords,
 				directory
 			}))
+		.then(res => {
+			console.timeEnd('loadData')
+			return res
+		})
 }
 module.exports.load = loadData
