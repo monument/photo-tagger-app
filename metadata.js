@@ -68,13 +68,19 @@ function readMetadata(filepath) {
 		.then(parseXml)
 		.then(Immutable.fromJS)
 }
+module.exports._read = readMetadata
 
 
 function loadMetadata(filepath) {
 	return readMetadata(filepath)
-		.then(extractKeywords)
-		.then(keywordListToMap)
+		.then(metadata => {
+			let keywordList = extractKeywords(metadata)
+			let semanticKeywords = keywordListToMap(keywordList)
+
+			return semanticKeywords
+		})
 }
+module.exports._load = loadMetadata
 
 
 function updateXmp(xmp, newKeywords) {
@@ -121,7 +127,7 @@ function loadData(imagePath) {
 				thumbPath: imagePath,
 				metadataPath,
 				keywords,
-				directory
+				directory,
 			}))
 		.then(res => {
 			console.timeEnd('loadData')
