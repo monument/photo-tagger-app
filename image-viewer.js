@@ -1,28 +1,29 @@
 'use strict'
 
+const React = require('react')
+const dom = React.DOM
 const map = require('lodash/map')
 const isArray = require('lodash/isArray')
 
 function PrettyJson({json}) {
 	json = json.toJSON()
-	return <dl>
-		{map(json, (v, k) => ([
-			<dt>{k}</dt>,
+	return dom.dl(null,
+		map(json, (v, k) => ([
+			dom.dt(null, k),
 			isArray(v)
-				? v.map(val => <dd>{val}</dd>)
-				: <dd>{v}</dd>
-		]))}
-	</dl>
+				? v.map(val => dom.dd(null, val))
+				: dom.dd(null, v)
+		])))
 }
+PrettyJson = React.createFactory(PrettyJson)
 
 function ImageViewer({image}) {
 	if (!image) {
 		return null
 	}
-	return <div className='viewer'>
-		<img src={`file://${image.get('thumbPath')}`} />
-		<br/>
-		<PrettyJson json={image.get('keywords')} />
-	</div>
+	return dom.div({className: 'viewer'},
+		dom.img({src: `file://${image.get('thumbPath')}`}),
+		dom.br(),
+		PrettyJson({json: image.get('keywords')}))
 }
-module.exports = ImageViewer
+module.exports = React.createFactory(ImageViewer)

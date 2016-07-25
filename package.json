@@ -13,9 +13,6 @@
     "start": "electron ."
   },
   "dependencies": {
-    "babel-preset-react": "^6.11.1",
-    "babel-preset-stage-3": "^6.11.0",
-    "babel-register": "^6.9.0",
     "bluebird": "^3.4.1",
     "classnames": "^2.2.5",
     "conf": "^0.2.0",

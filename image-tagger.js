@@ -1,6 +1,7 @@
 'use strict'
 
 const React = require('react')
+const dom = React.DOM
 
 const startCase = require('lodash/startCase')
 const isArray = require('lodash/isArray')
@@ -137,34 +138,32 @@ function Selector(props) {
 	// console.log(options, selected)
 
 	return (
-		<div className={`selector ${inputType}`}>
-			<h2>{title}</h2>
-			<div className='contents'>
-				{warning
-					? <p className='warning'>{warning}</p>
+		dom.div({className: `selector ${inputType}`},
+			dom.h2(null, title),
+			dom.div({className: 'contents'},
+				warning
+					? dom.p({className: 'warning'}, warning)
 					: options.map(val => {
 						let isChecked = Immutable.List.isList(selected)
 							? selected.includes(val)
 							: val === selected
 
-						return <label key={val} className={cx('option', {selected: isChecked})}>
-							<input
-								type={inputType}
-								value={val}
-								name={title}
-								checked={isChecked}
-								onChange={onChange}
-							/>
-							<p>{val}</p>
-						</label>
-					})}
-			</div>
-		</div>
+						return dom.label({key: val, className: cx('option', {selected: isChecked})},
+							dom.input({
+								type: inputType,
+								value: val,
+								name: title,
+								checked: isChecked,
+								onChange: onChange,
+							}),
+							dom.p(null, val))
+					})))
 	)
 }
 Selector.defaultProps = {
 	options: [],
 }
+Selector = React.createFactory(Selector)
 
 //
 
@@ -176,29 +175,29 @@ function ImageTagger(props) {
 	let keywords = image.get('keywords')
 
 	return (
-		<form className='tagger'>
-			<Selector
-				type='or'
-				title='Category'
-				selected={keywords.get('Category')}
-				options={CATEGORIES}
-				onChange={onChangeMetadata('Category')}
-			/>
-			<Selector
-				type='or'
-				title='Material'
-				selected={keywords.get('Material')}
-				options={MATERIALS}
-				onChange={onChangeMetadata('Material')}
-			/>
-			<Selector
-				type='or'
-				title='Size'
-				selected={keywords.get('Size')}
-				options={SIZES}
-				onChange={onChangeMetadata('Size')}
-			/>
-			{DETAIL_LIST.map(title => {
+		dom.form({className: 'tagger'},
+			Selector({
+				type: 'or',
+				title: 'Category',
+				selected: keywords.get('Category'),
+				options: CATEGORIES,
+				onChange: onChangeMetadata('Category'),
+			}),
+			Selector({
+				type: 'or',
+				title: 'Material',
+				selected: keywords.get('Material'),
+				options: MATERIALS,
+				onChange: onChangeMetadata('Material'),
+			}),
+			Selector({
+				type: 'or',
+				title: 'Size',
+				selected: keywords.get('Size'),
+				options: SIZES,
+				onChange: onChangeMetadata('Size'),
+			}),
+			DETAIL_LIST.map(title => {
 				let selected = DETAILS[keywords.get('Material', '').toLowerCase()] || {}
 				let possibilities = selected[title.toLowerCase()]
 				if (!possibilities) {
@@ -220,17 +219,16 @@ function ImageTagger(props) {
 					options = null
 				}
 
-				return <Selector
-					key={title}
-					type={type}
-					title={title}
-					selected={keywords.get(title)}
-					options={options}
-					warning={!options && possibilities.$dependsOn ? `Please select a ${possibilities.$dependsOn.toLowerCase()}` : false}
-					onChange={onChangeMetadata(title)}
-				/>
-			})}
-		</form>
+				return Selector({
+					key: title,
+					type: type,
+					title: title,
+					selected: keywords.get(title),
+					options: options,
+					warning: !options && possibilities.$dependsOn ? `Please select a ${possibilities.$dependsOn.toLowerCase()}` : false,
+					onChange: onChangeMetadata(title),
+				})
+			}))
 	)
 }
-module.exports = ImageTagger
+module.exports = React.createFactory(ImageTagger)

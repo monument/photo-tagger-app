@@ -1,6 +1,7 @@
 'use strict'
 
 const React = require('react')
+const dom = React.DOM
 
 const xor = require('lodash/xor')
 const Immutable = require('immutable')
@@ -128,49 +129,41 @@ class App extends React.Component {
 		let count = this.state.imagePaths.size
 
 		return (
-			<div className='app-container'>
-				<header className='header'>
-					<div>
-						<input
-							type='number'
-							max={this.state.imagePaths.size}
-							min={1}
-							value={selectedIndex + 1}
-							onChange={ev => this.onChangeImage(parseInt(ev.target.value, 10) - 1)}
-							style={{width: this.state.imagePaths.size.toString().length + 3 + 'ch'}}
-						/>
-						{' of '}
-						{count}
-					</div>
-					<div className='controls'>
-						<button
-							onClick={this.copyFromPrevious.bind(this)}
-							disabled={!(selectedIndex == 0 || selectedIndex == count - 1 || lastImage)}
-						>
-							Copy Metadata from Last
-						</button>
+			dom.div({className: 'app-container'},
+				dom.header({className: 'header'},
+					dom.div(null,
+						dom.input({
+							type: 'number',
+							max: this.state.imagePaths.size,
+							min: 1,
+							value: selectedIndex + 1,
+							onChange: ev => this.onChangeImage(parseInt(ev.target.value, 10) - 1),
+							style: {width: this.state.imagePaths.size.toString().length + 3 + 'ch'},
+						}),
+						' of ',
+						count),
+					dom.div({className: 'controls'},
+						dom.button({
+							onClick: this.copyFromPrevious.bind(this),
+							disabled: !(selectedIndex == 0 || selectedIndex == count - 1 || lastImage),
+						}, 'Copy Metadata from Last'),
 
-						<button
-							onClick={() => this.onChangeImage(selectedIndex - 1)}
-							disabled={!(selectedIndex - 1 >= 0)}
-						>
-							Back
-						</button>
+						dom.button({
+							onClick: () => this.onChangeImage(selectedIndex - 1),
+							disabled: !(selectedIndex - 1 >= 0),
+						}, 'Back'),
 
-						<button
-							onClick={() => this.onChangeImage(selectedIndex + 1)}
-							disabled={!(selectedIndex + 1 < count)}
-						>
-							Next
-						</button>
-					</div>
-				</header>
-				<ImageViewer image={selectedImage} />
-				<ImageTagger
-					image={selectedImage}
-					onChangeMetadata={this.onChangeMetadata.bind(this)}
-				/>
-			</div>
+						dom.button({
+							onClick: () => this.onChangeImage(selectedIndex + 1),
+							disabled: !(selectedIndex + 1 < count),
+						}, 'Next'))
+				),
+				ImageViewer({image: selectedImage}),
+				ImageTagger({
+					image: selectedImage,
+					onChangeMetadata: this.onChangeMetadata.bind(this),
+				})
+			)
 		)
 	}
 }

@@ -8,12 +8,10 @@
 	<body>
 		<div id='app'></div>
 		<script>
-			require('babel-register')
 			const App = require('./app.js')
-			const React = require('react')
-			const dom = require('react-dom')
-			const node = document.querySelector('#app')
-			dom.render(React.createElement(App, null), node)
+			const {createElement} = require('react')
+			const {render} = require('react-dom')
+			render(createElement(App), document.querySelector('#app'))
 		</script>
 	</body>
 </html>
